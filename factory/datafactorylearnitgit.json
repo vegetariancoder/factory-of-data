@@ -1,0 +1,9 @@
+{
+	"name": "datafactorylearnitgit",
+	"location": "southcentralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dd7504bb-a50a-4397-a151-2b452795993a",
+		"tenantId": "669a5fb0-a885-408a-846b-2f9c3d3697cc"
+	}
+}
