@@ -131,6 +131,37 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "copy transformed data to sink",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [
+								{
+									"activity": "copy data from http to adls",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "1.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "copy_transformed_data",
+									"type": "DataFlowReference"
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
 						}
 					]
 				}
