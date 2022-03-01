@@ -9,27 +9,27 @@
 						"referenceName": "df_raw_cases_death",
 						"type": "DatasetReference"
 					},
-					"name": "readingdata"
+					"name": "ReadingCasesAndDeathData"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "df_edit_data",
+						"referenceName": "df_processed_cases_death",
 						"type": "DatasetReference"
 					},
-					"name": "storingData"
+					"name": "StoringDataIntoADLS"
 				}
 			],
 			"transformations": [
 				{
-					"name": "filterEuropeanData"
+					"name": "FilterEuropeanDataOnly"
 				},
 				{
-					"name": "selectCertainColumns"
+					"name": "SelectSpecificColumns"
 				}
 			],
-			"script": "source(output(\n\t\tcountry as string,\n\t\tcountry_code as string,\n\t\tcontinent as string,\n\t\tpopulation as string,\n\t\tindicator as string,\n\t\tdaily_count as string,\n\t\tdate as string,\n\t\trate_14_day as string,\n\t\tsource as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> readingdata\nreadingdata filter(continent=='Europe' && not(isNull(country_code))) ~> filterEuropeanData\nfilterEuropeanData select(mapColumn(\n\t\tcountry,\n\t\tcountry_code,\n\t\tpopulation,\n\t\tindicator,\n\t\tdaily_count,\n\t\tsource,\n\t\teach(match(name == 'date'),\n\t\t\t'reported'+'_date' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selectCertainColumns\nselectCertainColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string,\n\t\tColumn_5 as string,\n\t\tColumn_6 as string,\n\t\tColumn_7 as string,\n\t\tColumn_8 as string,\n\t\tColumn_9 as string\n\t),\n\tumask: 0777,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> storingData"
+			"script": "source(output(\n\t\tcountry as string,\n\t\tcountry_code as string,\n\t\tcontinent as string,\n\t\tpopulation as integer,\n\t\tindicator as string,\n\t\tdaily_count as boolean,\n\t\tdate as date,\n\t\trate_14_day as boolean,\n\t\tsource as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ReadingCasesAndDeathData\nReadingCasesAndDeathData filter(continent=='Europe' && not(isNull(country_code))) ~> FilterEuropeanDataOnly\nFilterEuropeanDataOnly select(mapColumn(\n\t\tcountry,\n\t\tcountry_code,\n\t\tpopulation,\n\t\tindicator,\n\t\tdaily_count,\n\t\tsource,\n\t\teach(match(name =='date'),\n\t\t\t'reported'+'_date' = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectSpecificColumns\nSelectSpecificColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> StoringDataIntoADLS"
 		}
 	}
 }

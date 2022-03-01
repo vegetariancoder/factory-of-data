@@ -1,6 +1,141 @@
 {
 	"name": "pl_copy_transform",
 	"properties": {
+		"activities": [
+			{
+				"name": "list of files and folder",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_ecdc_list_files",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "iterate over each file and folder",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "list of files and folder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('list of files and folder').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copy data from http to adls",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_ecdc_https_raw_data",
+									"type": "DatasetReference",
+									"parameters": {
+										"relativeURL": {
+											"value": "@item().sourceRelativeURL",
+											"type": "Expression"
+										},
+										"baseURL": {
+											"value": "@item().baseURL",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_ecdc_adls_raw_data",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileSystem": {
+											"value": "@item().fileSystemName",
+											"type": "Expression"
+										},
+										"directory": {
+											"value": "@item().directoryName",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@item().sinkFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
 		"annotations": []
 	}
 }

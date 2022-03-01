@@ -1,0 +1,20 @@
+{
+	"name": "df_processed_cases_death",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_ecdc_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "processed",
+				"fileSystem": "inputdata"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
