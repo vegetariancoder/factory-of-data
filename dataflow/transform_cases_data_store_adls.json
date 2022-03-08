@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "df_processed_cases_death",
+						"referenceName": "df_processed_cases_death_csv",
 						"type": "DatasetReference"
 					},
 					"name": "StoreTransformDataToADLS"
@@ -59,7 +59,6 @@
 				"     skipDuplicateMapOutputs: true) ~> SelectParticularColumnsOnly",
 				"SelectParticularColumnsOnly sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
