@@ -10,6 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "office.csv",
+				"folderPath": "auto",
 				"fileSystem": "rawdata"
 			},
 			"columnDelimiter": ",",
