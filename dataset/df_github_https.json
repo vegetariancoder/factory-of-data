@@ -3,10 +3,19 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_http_github",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"sourceBaseURL": {
+					"value": "@dataset().sourceBaseURL",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
-			"relativeURL": {
+			"sourceBaseURL": {
+				"type": "string"
+			},
+			"sourceRelativeURL": {
 				"type": "string"
 			}
 		},
@@ -16,7 +25,7 @@
 			"location": {
 				"type": "HttpServerLocation",
 				"relativeUrl": {
-					"value": "@dataset().relativeURL",
+					"value": "@dataset().sourceRelativeURL",
 					"type": "Expression"
 				}
 			},
