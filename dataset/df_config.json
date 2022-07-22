@@ -1,0 +1,19 @@
+{
+	"name": "df_config",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_config",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "github_file_names.json",
+				"fileSystem": "config"
+			}
+		},
+		"schema": {}
+	}
+}
