@@ -2,22 +2,11 @@
 	"name": "ls_adls_github_data",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"parameters": {
-			"sinkContainerName": {
-				"type": "string"
-			},
-			"sinkFolderName": {
-				"type": "string"
-			},
-			"sinkFileName": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "https://learnitstorage.dfs.core.windows.net/",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEJENkEwODExLTA2NTMtNEZDOC05OUUzLTAwNEU3NUJDRTVCQV80ODM3NWM2NC0xN2RjLTQ4YTEtOTQ0ZC1kZTk4NmZkNDg2NmMiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEJENkEwODExLTA2NTMtNEZDOC05OUUzLTAwNEU3NUJDRTVCQV9jZWVjNTE5ZS0zMjgwLTQ4NmUtYjZjOS1iNmU5MjU3NjRjMDEiDQp9"
 		}
 	}
 }
