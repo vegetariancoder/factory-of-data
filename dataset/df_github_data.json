@@ -5,14 +5,34 @@
 			"referenceName": "ls_adls_github_data",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"sinkContainerName": {
+				"type": "string"
+			},
+			"sinkFolderName": {
+				"type": "string"
+			},
+			"sinkFileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "office.csv",
-				"folderPath": "auto",
-				"fileSystem": "rawdata"
+				"fileName": {
+					"value": "@dataset().sinkFileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().sinkFolderName",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().sinkContainerName",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
