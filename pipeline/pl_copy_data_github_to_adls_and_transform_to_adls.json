@@ -1,5 +1,5 @@
 {
-	"name": "pl_copy_data_github_to_adls",
+	"name": "pl_copy_data_github_to_adls_and_transform_to_adls",
 	"properties": {
 		"activities": [
 			{
@@ -133,6 +133,87 @@
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "top-5-offices-by-state",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "iterating over look up variables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/learn_it_sahil@outlook.com/autodesk-top-5-offices-by-state"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "cumulative-percentage-by-day",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "top-5-offices-by-state",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/learn_it_sahil@outlook.com/autodesk-cumilative-percentage-by-day"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "cumulative-daily-opportunities-by-state",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "cumulative-percentage-by-day",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/learn_it_sahil@outlook.com/autodesk-cumulative-daily-opportunities-by-state"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
